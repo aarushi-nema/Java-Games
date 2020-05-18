@@ -1,0 +1,134 @@
+package Games;
+
+import java.util.Scanner;
+
+public class TicTacToe {
+
+	public static void display(char[][] gameboard) {
+		for (char[] c : gameboard) {
+			for (char s : c) {
+				System.out.print(s);
+			}
+			System.out.println();
+		}
+	}
+
+	public static void place(char[][] gameboard, int pos, String user) {
+		char symbol;
+		
+		if(user.equals("player")){
+			symbol='X';
+		} else {
+			symbol='O';
+		}
+		
+		switch (pos) {
+		case 1: gameboard[0][0]= symbol;
+		        break;
+		case 2: gameboard[0][2]= symbol;
+                break;
+		case 3: gameboard[0][4]= symbol;
+                break;
+		case 4: gameboard[2][0]= symbol;
+                break;
+		case 5: gameboard[2][2]= symbol;
+                break;
+		case 6: gameboard[2][4]= symbol;
+                break;
+		case 7: gameboard[4][0]= symbol;
+                break;
+		case 8: gameboard[4][2]= symbol;
+                break;
+		case 9: gameboard[4][4]= symbol;
+                break;
+		}
+	}
+	
+	public static String check_winner (char [][] gameboard){
+		String winner=null;
+		
+		if(gameboard[0][0]=='X' && gameboard[0][2]=='X' && gameboard[0][4]=='X' ||
+		   gameboard[2][0]=='X' && gameboard[2][2]=='X' && gameboard[2][4]=='X' ||  
+		   gameboard[4][0]=='X' && gameboard[4][2]=='X' && gameboard[4][4]=='X' || 
+		   gameboard[0][0]=='X' && gameboard[2][0]=='X' && gameboard[4][0]=='X' || 
+		   gameboard[0][2]=='X' && gameboard[2][2]=='X' && gameboard[4][2]=='X' || 
+		   gameboard[0][4]=='X' && gameboard[2][4]=='X' && gameboard[4][4]=='X' || 
+		   gameboard[0][0]=='X' && gameboard[2][2]=='X' && gameboard[4][4]=='X' || 
+		   gameboard[4][0]=='X' && gameboard[2][2]=='X' && gameboard[0][4]=='X')
+			winner= "player";
+		
+		else if(gameboard[0][0]=='O' && gameboard[0][2]=='O' && gameboard[0][4]=='O' ||
+				   gameboard[2][0]=='O' && gameboard[2][2]=='O' && gameboard[2][4]=='O' ||  
+				   gameboard[4][0]=='O' && gameboard[4][2]=='O' && gameboard[4][4]=='O' || 
+				   gameboard[0][0]=='O' && gameboard[2][0]=='O' && gameboard[4][0]=='O' || 
+				   gameboard[0][2]=='O' && gameboard[2][2]=='O' && gameboard[4][2]=='O' || 
+				   gameboard[0][4]=='O' && gameboard[2][4]=='O' && gameboard[4][4]=='O' || 
+				   gameboard[0][0]=='O' && gameboard[2][2]=='O' && gameboard[4][4]=='O' || 
+				   gameboard[4][0]=='O' && gameboard[2][2]=='O' && gameboard[0][4]=='O')
+					winner= "computer";
+		
+		return winner;
+	}
+	
+	public static int check_game(char [][] gameboard){
+		int a=0;
+		for(char[] c: gameboard){
+			for(char ch: c){
+				if(ch!=' ')
+					a++;
+			}
+		}
+		
+		return a;
+	}
+
+	public static void main(String[] args) {
+		char[][] gameboard = { { ' ', '|', ' ', '|', ' ' },
+				{ '-', '+', '-', '+', '-' }, { ' ', '|', ' ', '|', ' ' },
+				{ '-', '+', '-', '+', '-' }, { ' ', '|', ' ', '|', ' ' } };
+		int userpos[]= new int[5];
+		int a=-1, rand=0;
+		System.out.println("Welcome to TicTacToe Simulation!p");
+		boolean status=true;
+		
+
+		while(status && a<5){
+			a++;
+			Scanner obj = new Scanner(System.in);
+			display(gameboard);
+			
+			System.out.println("Enter placement (1-9)");
+			int playerpos = obj.nextInt();
+			userpos[a]=playerpos;
+			place(gameboard, playerpos, "player");
+			
+			boolean found=false;
+			while (!found){
+				found=true;
+				rand= (int)(Math.random()*10);
+				for(int i: userpos){
+					if(rand==i)
+						found=false;
+				}
+			}
+			place(gameboard, rand, "computer");	
+			
+			String str= check_winner(gameboard);
+			if(str!=null){
+				display(gameboard);
+				System.out.println("The Winner is : " + str);
+				status= false;
+			}
+			
+			if(check_game(gameboard)==9)
+				status=false;	
+		}
+		
+		System.out.println("Thanks for playing!");
+		
+		
+	}
+	
+	
+
+}
